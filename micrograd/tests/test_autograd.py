@@ -30,3 +30,18 @@ def test_tanh_gradient(x):
     expected = 1 - math.tanh(x) ** 2
 
     assert a.grad == pytest.approx(expected)
+
+@pytest.mark.parametrize("x", [-2.0, -0.5, 0.0, 0.5, 2.0])
+def test_tanh_gradient_equivalence(x):
+    a = Value(x)
+    b = Value(x)
+
+    direct = a.tanh()
+
+    exp_2x = (2 * b).exp()
+    expanded = (exp_2x - 1) / (exp_2x + 1)
+
+    direct.backward()
+    expanded.backward()
+
+    assert a.grad == pytest.approx(b.grad)
