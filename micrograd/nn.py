@@ -1,5 +1,5 @@
 import random
-from autograd import Value
+from .autograd import Value
 
 class Neuron:
 
